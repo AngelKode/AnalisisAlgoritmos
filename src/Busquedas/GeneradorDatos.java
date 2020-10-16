@@ -13,18 +13,44 @@ import java.util.Random;
  */
 public class GeneradorDatos {
     
-    // "aleatorio"
-    public static int[] generarArregloInt(int x, int dim, int bound){
+    public static int[] generarArregloPeorCasoInt(int x, int dim, int bound){
         int[] arreglo = new int[dim];
         Random ran = new Random();
        
-        for(int y=0; y < dim; y++){
-            arreglo[y] =ran.nextInt(bound);
-        }
+        //for(int y=0; y < dim; y++){
+          //  arreglo[y] =ran.nextInt(bound);
+        //}
         
         int pos = ran.nextInt(dim);
         arreglo[pos] = x;
         
        return arreglo;
     }
+    
+    public static int[] generarArregloMejorCasoInt(int x, int dim, int bound){
+        int[] arreglo = new int[dim];
+        Random ran = new Random();
+       
+        //for(int y=0; y < dim; y++){
+           // arreglo[y] =ran.nextInt(bound);
+        //}
+        
+        arreglo[0] = x;
+        
+       return arreglo;
+    }
+    
+    public static int[] generarArregloCasoPromedioInt(int x, int dim, int bound){
+        int[] arreglo = new int[dim];
+        Random ran = new Random();
+       
+        //for(int y=0; y < dim; y++){
+            //arreglo[y] =ran.nextInt(bound);
+        //}
+        
+        arreglo[dim/2] = x;
+        
+       return arreglo;
+    }
+    
 }

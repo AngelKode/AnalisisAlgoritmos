@@ -7,16 +7,8 @@ package analisisalgoritmos;
 
 import Busquedas.BusquedaSecuencial;
 import Busquedas.GeneradorDatos;
-import java.awt.Color;
-import javax.swing.JFrame;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import graficador.Graficador;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  *
@@ -30,61 +22,81 @@ public class AnalisisAlgoritmos {
     public static void main(String[] args) {
         
         int j = 0;
-        int[] aux;
-        int limite = 1000;
-        int[] tiempos = new int[limite];
-        int valorTiempo = 0;
+        
+        int limite = 100000;
+        int[] tiemposMejorCaso = new int[limite];
+        int[] tiemposPeorCaso = new int[limite];
+        int[] tiemposCasoPromedio = new int[limite];
+        int valorTiempoMejor = 0;
+        int valorTiempoPromedio = 0;
+        int valorTiempoPeor = 0;
         boolean inicio = true;
         //XYSeriesCollection es la coleccion de todos esos puntos
-        XYSeriesCollection dataSet = new XYSeriesCollection();
+        Graficador grafica = new Graficador();
         
         BusquedaSecuencial b1 = new BusquedaSecuencial();
-        
+
         for(j=1;j<limite;j++){
-               aux = GeneradorDatos.generarArregloInt(6,j + 1, 100);
-               int pos = b1.buscar(aux, 6);
-               tiempos[j] = (int)b1.getTotal();
+               System.out.println(j);
+               int[] auxMejorCaso = new int[j];
+               int[] auxPeorCaso = new int[j];
+               int[] auxCasoPromedio = new int[j];
+               
+               auxMejorCaso = GeneradorDatos.generarArregloMejorCasoInt(6,j + 1, 100);
+               auxPeorCaso = GeneradorDatos.generarArregloPeorCasoInt(6,j + 1, 100);
+               auxCasoPromedio = GeneradorDatos.generarArregloCasoPromedioInt(6,j + 1, 100);
+               
+               b1.buscar(auxMejorCaso, 6);
+                tiemposMejorCaso[j] = (int)b1.getTotal();
+               b1.buscar(auxPeorCaso, 6);
+                 tiemposPeorCaso[j] = (int)b1.getTotal();
+               b1.buscar(auxCasoPromedio, 6);
+                 tiemposCasoPromedio[j] = (int)b1.getTotal();
+        
+              
                //Creamos el siguiente elemento de la colección
-               XYSeries seriesDatos = new XYSeries("t"+(j));
+               XYSeries seriesDatosMejor = new XYSeries("t"+(j)+1);
+               XYSeries seriesDatosPeor = new XYSeries("t"+(j)+2);
+               XYSeries seriesDatosPromedio = new XYSeries("t"+(j)+3);
                if(inicio){
                    //Puntos de la serie
-                   seriesDatos.add(0,tiempos[j]);
-                   seriesDatos.add(j-1, tiempos[j]); 
+                   //Mejor
+                   seriesDatosMejor.add(0,tiemposMejorCaso[j]);
+                   seriesDatosMejor.add(j-1, tiemposMejorCaso[j]);
+                   //Peor
+                   seriesDatosPeor.add(0,tiemposPeorCaso[j]);
+                   seriesDatosPeor.add(j-1, tiemposPeorCaso[j]);
+                   //Promedio
+                   seriesDatosPromedio.add(0,tiemposCasoPromedio[j]);
+                   seriesDatosPromedio.add(j-1, tiemposCasoPromedio[j]); 
                    //Para saber que ya pasó el primer dato
                    inicio = false;
                }else{
-                   seriesDatos.add(j-1, tiempos[j]);
-                   seriesDatos.add(j-2, valorTiempo);
+                   //Mejor
+                   seriesDatosMejor.add(j-1, tiemposMejorCaso[j]);
+                   seriesDatosMejor.add(j-2, valorTiempoMejor);
+                   //Peor
+                   seriesDatosPeor.add(j-1,tiemposPeorCaso[j]);
+                   seriesDatosPeor.add(j-2,valorTiempoPeor);
+                   //Promedio
+                   seriesDatosPromedio.add(j-1,tiemposCasoPromedio[j]);
+                   seriesDatosPromedio.add(j-2, valorTiempoPromedio); 
                }
                //para tener el dato anterior en la serie
-               valorTiempo = tiempos[j];
+               valorTiempoMejor = tiemposMejorCaso[j];
+               valorTiempoPeor = tiemposPeorCaso[j];
+               valorTiempoPromedio = tiemposCasoPromedio[j];
                //Agregamos el objeto XYSeries al arreglo
-               dataSet.addSeries(seriesDatos);
+
+               grafica.agregarSerie(seriesDatosMejor);
+               grafica.agregarSerie(seriesDatosPromedio);
+               grafica.agregarSerie(seriesDatosPeor);
         }
         
-        JFreeChart grafico = ChartFactory.createXYLineChart("Graficador de tiempos"
-                                                            ,"Tamaño"
-                                                            , "Tiempo(ms)"
-                                                            , dataSet
-                                                            ,PlotOrientation.VERTICAL, false, true,false);
-        XYPlot xyplot = grafico.getXYPlot();
-                
-        //Cambiamos el color del trazo
-        XYLineAndShapeRenderer render = new XYLineAndShapeRenderer();
-            for(int i=0;i<limite;i++){
-                render.setSeriesPaint(i,Color.BLACK);
-            }
-        xyplot.setRenderer(render);
-        
-        ChartPanel panelGrafico = new ChartPanel(grafico);
-        
+        grafica.generarGrafico("Grafica Tiempos", "N", "Tiempo(ms)");
         //Creamos la ventana para mostrarlo
-        JFrame ventana = new JFrame("Grafico");
-        ventana.setLocationRelativeTo(null);
-        ventana.setSize(400,600);
-        ventana.setVisible(true);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.add(panelGrafico);
+        grafica.mostrarGrafico();
+                
     }
     
 }

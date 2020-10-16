@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Busquedas;
+package ordenamiento;
+
+import Busquedas.Busquedas;
 
 /**
  *
- * @author working
+ * @author depot
  */
-public class BusquedaSecuencial {
+public class Burbuja {
     
-   
-    public long tInicio;
+     public long tInicio;
     public long tFinal;
     public long tTotal;
 
-    public BusquedaSecuencial() {
+    public Burbuja() {
         this.tFinal = 0;
         this.tInicio = 0;
         this.tTotal = 0 ;
@@ -41,5 +42,9 @@ public class BusquedaSecuencial {
         return tTotal;
     }
     
+    public void ordenar(int[] datos){
+        //Ordenamos
+        
+    }
     
 }
