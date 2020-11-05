@@ -13,30 +13,26 @@ import java.util.Random;
  */
 public class GeneradorDatos {
     
-    public static int[] generarArregloPeorCasoInt(int x, int dim, int bound){
-        int[] arreglo = new int[dim];
-        Random ran = new Random();
+    public static int[] generarArregloPeorCasoInt(int x, int dim){
+        int[] arreglo = new int[dim];//1 operacion elemental
+        Random ran = new Random();//1 operacion elemental
        
-        //for(int y=0; y < dim; y++){
-          //  arreglo[y] =ran.nextInt(bound);
-        //}
+        for(int y=0; y < dim; y++){//1 + 3n operaciones elementales
+            arreglo[y] = dim - y;// //3 operaciones elementales
+        }
         
-        int pos = ran.nextInt(dim);
-        arreglo[pos] = x;
         
        return arreglo;
     }
     
-    public static int[] generarArregloMejorCasoInt(int x, int dim, int bound){
-        int[] arreglo = new int[dim];
-        Random ran = new Random();
+    public static int[] generarArregloMejorCasoInt(int x, int dim){
+        int[] arreglo = new int[dim];//1 operacion elemental
+        Random ran = new Random();//1 operacion elemental
        
-        //for(int y=0; y < dim; y++){
-           // arreglo[y] =ran.nextInt(bound);
-        //}
-        
-        arreglo[0] = x;
-        
+        for(int y=0; y < dim; y++){//1 + 3n operaciones elementales
+            arreglo[y] =y;         //2 operaciones elementales
+        }
+       
        return arreglo;
     }
     
@@ -51,6 +47,29 @@ public class GeneradorDatos {
         arreglo[dim/2] = x;
         
        return arreglo;
+    }
+    
+    public static int[] generarArregloInt(int x, int dim){
+        int[] arreglo = new int[dim];
+        Random ran = new Random();
+        
+        for(int i=0; i < dim; i++){
+            arreglo[i] = ran.nextInt(x);
+        }
+        
+        return arreglo;
+    }
+    
+    public static int[] generarArregloPeorCasoIntBurbuja(int x, int dim){
+        
+        int[] arreglo = new int[dim];
+        int contador = 0;
+        for(int i = dim; i > 0; i--){
+            arreglo[contador] = i;
+            contador++;
+        }
+        
+        return arreglo;
     }
     
 }
