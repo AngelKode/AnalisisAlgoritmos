@@ -5,7 +5,9 @@
  */
 package graficador;
 
+import clases.TiemposOrdenamiento;
 import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -13,6 +15,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -27,6 +30,7 @@ public class Graficador {
     private XYPlot plot;
     private JFreeChart freeChart;
     private ChartPanel panelGrafico;
+    private DefaultCategoryDataset dataSet;
 
     public Graficador() {
         this.coleccionDatos = new XYSeriesCollection();
@@ -34,10 +38,22 @@ public class Graficador {
         this.plot = new XYPlot();
         this.freeChart = new JFreeChart(plot);
         this.panelGrafico = null;
+        this.dataSet = null;
     }
     
     public void agregarSerie(XYSeries serie){
         this.coleccionDatos.addSeries(serie);
+    }
+    
+    public void agregarSerie(ArrayList<TiemposOrdenamiento> datos,ArrayList<TiemposOrdenamiento> datos2){
+        //Aqui es cuando quieran con un area
+        //Instanciamos el category set que tendrá los datos
+        dataSet = new DefaultCategoryDataset();
+        
+        for(int i=0; i < datos.size() ; i++){
+            dataSet.addValue(datos.get(i).getTiempo(),datos.get(i).getTipoOrdenamiento(), i+"");
+            dataSet.addValue(datos2.get(i).getTiempo(),datos2.get(i).getTipoOrdenamiento(), i+"");
+        }
     }
     
     public void setColorGrafico(Color color){
@@ -50,6 +66,13 @@ public class Graficador {
     
     public void generarGrafico(String tituloGrafico, String ejeX, String ejeY){
         this.freeChart = ChartFactory.createXYLineChart(tituloGrafico,ejeX, ejeY, this.coleccionDatos, PlotOrientation.VERTICAL,false,true,false);
+    }
+    
+    public void generarGrafico(String ejeX, String ejeY){
+        this.freeChart = ChartFactory.createAreaChart("Comparativa algoritmos de ordenamiento", 
+                                                      ejeX, 
+                                                      ejeY, 
+                                                      this.dataSet);
     }
     
     public void mostrarGrafico(){

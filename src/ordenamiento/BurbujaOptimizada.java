@@ -11,13 +11,12 @@ import Busquedas.Busquedas;
  *
  * @author depot
  */
-public class Burbuja {
-    
-    public long tInicio;
+public class BurbujaOptimizada {
+     public long tInicio;
     public long tFinal;
     public long tTotal;
 
-    public Burbuja() {
+    public BurbujaOptimizada() {
         this.tFinal = 0;
         this.tInicio = 0;
         this.tTotal = 0 ;
@@ -43,20 +42,23 @@ public class Burbuja {
     }
     
     public void ordenar(int[] datos){
-        //Ordenamos
-        int[] ordenado = datos;
-        //Usamos el ordenamiento burbuja
-        for(int i = 0; i < ordenado.length-1;i++){
-            for(int j = 0; j < ordenado.length-1; j++){
-                 
-                if(ordenado[j] > ordenado[j+1]){
-                    int aux = ordenado[j];
-                    ordenado[j] = ordenado[j+1];
-                    ordenado[j+1] = aux;
-                }
-                
-            }
-        }
+        int AUX;
+        int N = datos.length;
+        int bandera=1;
+
+        for(int paso=0;paso<N-1&&bandera==1;paso++){
+        /* si en el paso anterior no hubo cambios se detiene ciclo */
+                bandera=0;
+                for(int j=0;j<N-paso-1;j++){
+                /* las comparaciones van dismuyendo
+                a medida que se efectuan los pasos */
+                        if(datos[j]>datos[j+1]){
+                                bandera=1; /* indica si se han realizados cambios o no */
+                                AUX=datos[j];
+                                datos[j]=datos[j+1];
+                                datos[j+1] = AUX;
+                          }
+                  }
+          }
     }
-    
 }

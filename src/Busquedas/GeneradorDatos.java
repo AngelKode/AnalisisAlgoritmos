@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class GeneradorDatos {
     
-    public static int[] generarArregloPeorCasoInt(int x, int dim){
+    public static int[] generarArregloPeorCasoInt(int dim){
         int[] arreglo = new int[dim];//1 operacion elemental
         Random ran = new Random();//1 operacion elemental
        
@@ -25,9 +25,8 @@ public class GeneradorDatos {
        return arreglo;
     }
     
-    public static int[] generarArregloMejorCasoInt(int x, int dim){
+    public static int[] generarArregloMejorCasoInt(int dim){
         int[] arreglo = new int[dim];//1 operacion elemental
-        Random ran = new Random();//1 operacion elemental
        
         for(int y=0; y < dim; y++){//1 + 3n operaciones elementales
             arreglo[y] =y;         //2 operaciones elementales
@@ -36,15 +35,13 @@ public class GeneradorDatos {
        return arreglo;
     }
     
-    public static int[] generarArregloCasoPromedioInt(int x, int dim, int bound){
+    public static int[] generarArregloCasoPromedioInt(int dim, int bound){
         int[] arreglo = new int[dim];
         Random ran = new Random();
        
-        //for(int y=0; y < dim; y++){
-            //arreglo[y] =ran.nextInt(bound);
-        //}
-        
-        arreglo[dim/2] = x;
+        for(int y=0; y < dim; y++){
+            arreglo[y] =ran.nextInt(bound);
+        }
         
        return arreglo;
     }
@@ -60,7 +57,7 @@ public class GeneradorDatos {
         return arreglo;
     }
     
-    public static int[] generarArregloPeorCasoIntBurbuja(int x, int dim){
+    public static int[] generarArregloPeorCasoIntBurbuja(int dim){
         
         int[] arreglo = new int[dim];
         int contador = 0;
