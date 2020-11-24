@@ -53,6 +53,8 @@ public class TSPDinamico {
                    resultado = getDistancia(raiz.getPuntos(), hijos[i].getPuntos()) + distanciaRecorrida;
                    this.acceso_distancias[raiz.getId()][hijos[i].getId()].setDistancia(resultado);
                    this.acceso_distancias[raiz.getId()][hijos[i].getId()].setVisitado(true);
+                   this.acceso_distancias[hijos[i].getId()][raiz.getId()].setDistancia(resultado);
+                   this.acceso_distancias[hijos[i].getId()][raiz.getId()].setVisitado(true);
                 } 
                 //Hacemos recursividad para recorrer los demas caminos faltantes
                 recorrerCaminos(hijos[i], nuevosHijos,inicio,resultado);
