@@ -6,16 +6,22 @@
 package analisisalgoritmos;
 
 import Busquedas.GeneradorDatos;
+import TSP.Ciudad;
+import TSP.PuntosXY;
 import clases.TiemposOrdenamiento;
 import graficador.Graficador;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 import ordenamiento.Burbuja;
 import ordenamiento.BurbujaOptimizada;
 import ordenamiento.InsertSort;
 import ordenamiento.MergeSort;
 import ordenamiento.QuickSort;
 import org.jfree.data.xy.XYSeries;
+import programacion_dinamica.TSPDinamico;
+import recursividad.Fibonacci;
 
 /**
  *
@@ -55,7 +61,7 @@ public class AnalisisAlgoritmos {
         
         //MergeSort
         MergeSort merge = new MergeSort();
-        
+        /*
         int N = 10000;
         Graficador grafica = new Graficador();
 
@@ -117,7 +123,7 @@ public class AnalisisAlgoritmos {
             
             datosSort.add(new TiemposOrdenamiento(tiempoTotalInsert, "InsertSort"));
             */
-            
+            /*
             //QuickSort
             numeros = GeneradorDatos.generarArregloPeorCasoInt(i);
             QuickSort quick = new QuickSort();
@@ -134,6 +140,94 @@ public class AnalisisAlgoritmos {
         grafica.agregarSerie(datosQuick,datosMerge);
         grafica.generarGrafico("N", "Tiempo(ms)");
         grafica.mostrarGrafico();
-    }
-    
+        */
+        
+        //Fibonacci
+        
+        /*
+        Fibonacci fibo = new Fibonacci();
+        
+        int N = 50;
+        
+        Graficador grafica = new Graficador();
+        ArrayList<TiemposOrdenamiento> datosIterativo = new ArrayList<>();
+        ArrayList<TiemposOrdenamiento> datosIterativoDinamico = new ArrayList<>(); 
+        ArrayList<TiemposOrdenamiento> datosRecursivo = new ArrayList<>();
+        ArrayList<TiemposOrdenamiento> datosRecursivoDinamico = new ArrayList<>();
+        
+        long tiempoInicial = 0;
+        long tiempoFinal = 0;
+        long tiempoTotal = 0;
+        
+        
+        for(int i=1; i < N; i++){
+            tiempoInicial = System.currentTimeMillis();
+            int n = fibo.ejecutarFibonacciIterativoDinamico(i);
+            tiempoFinal = System.currentTimeMillis();
+            tiempoTotal = tiempoFinal - tiempoInicial;
+
+            datosIterativo.add(new TiemposOrdenamiento(tiempoTotal, "Iterativo dinámico"));
+            
+            tiempoInicial = 0;
+            tiempoFinal = 0;
+            tiempoTotal = 0;
+            
+            tiempoInicial = System.currentTimeMillis();
+            int s = fibo.ejecutarFibonacciRecursivoDinamico(i);
+            tiempoFinal = System.currentTimeMillis();
+            tiempoTotal = tiempoFinal - tiempoInicial;
+            
+            datosRecursivo.add(new TiemposOrdenamiento(tiempoTotal, "Recursivo dinámico"));
+            
+        }
+        
+        grafica.agregarSerie(datosRecursivo,datosIterativo);
+        grafica.generarGrafico("N", "Tiempo(ms)");
+        grafica.mostrarGrafico();
+        */
+        
+        //Grafos TSP
+        /*
+        Grafo s = new Grafo();
+        
+        s.crearNuevoGrafo();
+        
+        for (Iterator<Ciudad> it = s.getCiudades().iterator(); it.hasNext();) {
+            Ciudad ciudad = it.next();
+            System.out.println(ciudad.getNombreCiudad());
+            
+            ciudad.getCiudadesConectadas().forEach((k,v)->{
+                System.out.println("Ciudad:"+k.getNombreCiudad()+",Distancia:"+v);
+            });
+            System.out.println("");
+        }
+        */
+        /*
+        PuntosXY[] puntos = new PuntosXY[3];
+        puntos[0] = new PuntosXY(2, 1);
+        puntos[1] = new PuntosXY(5, 3);
+        puntos[2] = new PuntosXY(6, 19);
+        
+        TSPDinamico tsp = new TSPDinamico(puntos);
+        tsp.resolverProblema();
+        */
+        TSPDinamico tsp = new TSPDinamico(null);
+        Ciudad nodo = new Ciudad("A",new PuntosXY(2, 3),0);
+
+        Ciudad[] nodos = new Ciudad[15];
+        
+        for(int i=0;i<nodos.length;i++){
+            Random random = new Random();
+            char nombreCiudad = (char)(i+65);
+            nodos[i] = new Ciudad(Character.toString(nombreCiudad), new PuntosXY(random.nextInt(100), random.nextInt(100)), i+1);
+        }
+        
+        long inicio = System.currentTimeMillis();
+        tsp.recorrerCaminos(nodo, nodos,nodo,0.0);
+        long finalTiempo = System.currentTimeMillis() - inicio;
+        
+        System.out.println(finalTiempo);
+    }   
+       
+               
 }

@@ -69,7 +69,7 @@ public class Graficador {
     }
     
     public void generarGrafico(String ejeX, String ejeY){
-        this.freeChart = ChartFactory.createAreaChart("Comparativa algoritmos de ordenamiento", 
+        this.freeChart = ChartFactory.createAreaChart("Tiempos", 
                                                       ejeX, 
                                                       ejeY, 
                                                       this.dataSet);

@@ -14,6 +14,7 @@ public class Fibonacci {
     private int numeroFibonacci;
     private long tiempoEjecucionIterativo;
     private long tiempoEjecucionRecursivo;
+    public int[] serieFibonacci;
 
     public Fibonacci() {
         this.numeroFibonacci = 0;
@@ -50,6 +51,65 @@ public class Fibonacci {
             
         return this.numeroFibonacci;
     }
+    
+    public int ejecutarFibonacciRecursivoDinamico(int n){
+        int v=0;
+        
+        serieFibonacci = new int[n];
+        for(int x = 0; x<serieFibonacci.length; x++){
+            serieFibonacci[x] = -1;
+        }
+        
+        serieFibonacci[0] = 0;
+        if(n>1){
+            serieFibonacci[1] = 1;
+        }
+        
+        v = FibonacciRecursivoDinamico(n);
+        return v;
+    }
+    
+    public int FibonacciRecursivoDinamico(int n){
+        int desN1 = 0;
+        int desN2 = 0;
+        
+        if(n == 0){
+            return 0;
+        }
+        else if(n == 1){
+            return 1;
+        }
+        else{
+            if(serieFibonacci[n-1] != -1){
+                desN1 = serieFibonacci[n-1];
+            }
+            else{
+                desN1 = FibonacciRecursivoDinamico(n-1);
+                serieFibonacci[n-1] = desN1;
+            }
+
+            if(serieFibonacci[n-2] != -1){
+                desN2 = serieFibonacci[n-2];
+            }
+            else{
+                desN2 = FibonacciRecursivoDinamico(n-2);
+                serieFibonacci[n-2] = desN2;
+            }
+            return desN1 + desN2;
+        }
+    }
+    
+    
+    public int ejecutarFibonacciIterativoDinamico(int x){
+        this.serieFibonacci = new int[x+1];
+	this.serieFibonacci[0] = 0;
+	this.serieFibonacci[1] = 1;
+	for(int i = 2; i <= x; i++) {
+		this.serieFibonacci[i] = this.serieFibonacci[i-1] + this.serieFibonacci[i-2];
+	}
+	return this.serieFibonacci[x];
+    }
+    
     
     public void tiempoEjecucionIterataivo(int N){
         
