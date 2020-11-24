@@ -211,19 +211,20 @@ public class AnalisisAlgoritmos {
         TSPDinamico tsp = new TSPDinamico(puntos);
         tsp.resolverProblema();
         */
-        TSPDinamico tsp = new TSPDinamico(null);
-        Ciudad nodo = new Ciudad("A",new PuntosXY(2, 3),0);
+        Ciudad ciudadInicial = new Ciudad("A",new PuntosXY(2, 3),0);
 
-        Ciudad[] nodos = new Ciudad[15];
+        Ciudad[] ciudades = new Ciudad[10];
         
-        for(int i=0;i<nodos.length;i++){
+        for(int i=0;i<ciudades.length;i++){
             Random random = new Random();
             char nombreCiudad = (char)(i+65);
-            nodos[i] = new Ciudad(Character.toString(nombreCiudad), new PuntosXY(random.nextInt(100), random.nextInt(100)), i+1);
+            ciudades[i] = new Ciudad(Character.toString(nombreCiudad), new PuntosXY(random.nextInt(100), random.nextInt(100)), i+1);
         }
         
+        TSPDinamico tsp = new TSPDinamico(ciudades);
+        
         long inicio = System.currentTimeMillis();
-        tsp.recorrerCaminos(nodo, nodos,nodo,0.0);
+        tsp.recorrerCaminos(ciudadInicial, ciudades,ciudadInicial,0.0);
         long finalTiempo = System.currentTimeMillis() - inicio;
         
         System.out.println(finalTiempo);

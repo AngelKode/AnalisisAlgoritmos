@@ -16,19 +16,12 @@ import java.util.ArrayList;
  */
 public class TSPDinamico {
     
-    final private PuntosXY coordenadasCiudades[];
     final private Visitado acceso_distancias[][];
     public ArrayList<Double> distancias;
 
-    public TSPDinamico(PuntosXY ciudades[]) {
-        this.coordenadasCiudades = ciudades;
+    public TSPDinamico(Ciudad ciudades[]) {
         this.distancias = new ArrayList<>();
-        this.acceso_distancias = new Visitado[ciudades.length][ciudades.length];
-        for(int i=0;i<ciudades.length;i++){
-            for(int j=0;j<ciudades.length;j++){
-              this.acceso_distancias[i][j] = new Visitado(0, false);
-            }
-        }
+        this.acceso_distancias = new Visitado[ciudades.length + 1][ciudades.length + 1];
     }
     
     public double recorrerCaminos(Ciudad raiz,Ciudad[] hijos,Ciudad inicio,double distanciaRecorrida){
@@ -47,14 +40,12 @@ public class TSPDinamico {
                 double resultado = 0;
                 //Obtenemos la distancia entre el nodo raiz y el siguiente y le sumamos
                 //la distancia que llevamos recorrida hasta ahorita
-                if(this.acceso_distancias[raiz.getId()][hijos[i].getId()].isVisitado()){
+                if(this.acceso_distancias[raiz.getId()][hijos[i].getId()] != null){
                    resultado = this.acceso_distancias[raiz.getId()][hijos[i].getId()].getDistancia();
                 }else{
                    resultado = getDistancia(raiz.getPuntos(), hijos[i].getPuntos()) + distanciaRecorrida;
-                   this.acceso_distancias[raiz.getId()][hijos[i].getId()].setDistancia(resultado);
-                   this.acceso_distancias[raiz.getId()][hijos[i].getId()].setVisitado(true);
-                   this.acceso_distancias[hijos[i].getId()][raiz.getId()].setDistancia(resultado);
-                   this.acceso_distancias[hijos[i].getId()][raiz.getId()].setVisitado(true);
+                   this.acceso_distancias[raiz.getId()][hijos[i].getId()] = new Visitado(resultado, true);
+                   this.acceso_distancias[hijos[i].getId()][raiz.getId()] = new Visitado(resultado, true);
                 } 
                 //Hacemos recursividad para recorrer los demas caminos faltantes
                 recorrerCaminos(hijos[i], nuevosHijos,inicio,resultado);
@@ -66,25 +57,21 @@ public class TSPDinamico {
            //Si la posicion en la tabla ya ha sido calculado, obtenemos ese dato de la tabla,
            //si no, calculamos la distancia y la guardamos en la tabla, y lo guardamos
            
-            if(this.acceso_distancias[raiz.getId()][hijos[0].getId()].isVisitado()){
+            if(this.acceso_distancias[raiz.getId()][hijos[0].getId()] != null){
                 resultado += this.acceso_distancias[raiz.getId()][hijos[0].getId()].getDistancia();
             }else{
                 resultado += getDistancia(raiz.getPuntos(), hijos[0].getPuntos());
-                this.acceso_distancias[raiz.getId()][hijos[0].getId()].setDistancia(resultado);
-                this.acceso_distancias[raiz.getId()][hijos[0].getId()].setVisitado(true);
-                this.acceso_distancias[hijos[0].getId()][raiz.getId()].setDistancia(resultado);
-                this.acceso_distancias[hijos[0].getId()][raiz.getId()].setVisitado(true);
+                this.acceso_distancias[raiz.getId()][hijos[0].getId()] = new Visitado(resultado, true);
+                this.acceso_distancias[hijos[0].getId()][raiz.getId()] = new Visitado(resultado, true);
             }
             
             //Obtenemos la distancia entre el ultimo nodo y el inicio
-            if(this.acceso_distancias[raiz.getId()][inicio.getId()].isVisitado()){
+            if(this.acceso_distancias[raiz.getId()][inicio.getId()] != null){
               resultado +=  this.acceso_distancias[raiz.getId()][hijos[0].getId()].getDistancia(); 
             }else{
               resultado += getDistancia(inicio.getPuntos(), hijos[0].getPuntos());
-              this.acceso_distancias[raiz.getId()][inicio.getId()].setDistancia(resultado);
-              this.acceso_distancias[raiz.getId()][inicio.getId()].setVisitado(true);
-              this.acceso_distancias[inicio.getId()][raiz.getId()].setDistancia(resultado);
-              this.acceso_distancias[inicio.getId()][raiz.getId()].setVisitado(true);
+              this.acceso_distancias[raiz.getId()][inicio.getId()] = new Visitado(resultado, true);
+              this.acceso_distancias[inicio.getId()][raiz.getId()] = new Visitado(resultado, true);
             }
            
            //Le sumamos la distancia que llevamos recorriendo
