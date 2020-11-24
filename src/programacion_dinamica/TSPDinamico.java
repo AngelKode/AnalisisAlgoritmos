@@ -23,9 +23,9 @@ public class TSPDinamico {
     public TSPDinamico(PuntosXY ciudades[]) {
         this.coordenadasCiudades = ciudades;
         this.distancias = new ArrayList<>();
-        this.acceso_distancias = new Visitado[30][30];
-        for(int i=0;i<30;i++){
-            for(int j=0;j<30;j++){
+        this.acceso_distancias = new Visitado[ciudades.length][ciudades.length];
+        for(int i=0;i<ciudades.length;i++){
+            for(int j=0;j<ciudades.length;j++){
               this.acceso_distancias[i][j] = new Visitado(0, false);
             }
         }
