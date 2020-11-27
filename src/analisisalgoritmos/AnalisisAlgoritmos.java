@@ -217,17 +217,21 @@ public class AnalisisAlgoritmos {
         
         for(int i=0;i<ciudades.length;i++){
             Random random = new Random();
-            char nombreCiudad = (char)(i+65);
-            ciudades[i] = new Ciudad(Character.toString(nombreCiudad), new PuntosXY(random.nextInt(100), random.nextInt(100)), i+1);
+            char nombreCiudad = (char)(i+66);
+            ciudades[i] = new Ciudad(Character.toString(nombreCiudad), 
+                                     new PuntosXY(random.nextInt(100), 
+                                     random.nextInt(100)), i+1);
         }
-        
+        double d = 0;
         TSPDinamico tsp = new TSPDinamico(ciudades);
         
         long inicio = System.currentTimeMillis();
         tsp.recorrerCaminos(ciudadInicial, ciudades,ciudadInicial,0.0);
         long finalTiempo = System.currentTimeMillis() - inicio;
-        
-        System.out.println(finalTiempo);
+        System.out.println("Tiempo de Ejecucion: " + finalTiempo);
+        System.out.println("Ciudades recorridas:"+ tsp.getCiudadesRecorridas());
+        System.out.println("Distancia mínima: "+tsp.getDistancia());
+        //System.out.println(finalTiempo);
     }   
        
                

@@ -16,11 +16,15 @@ import java.util.ArrayList;
 public class TSPDinamico {
     
     final private Double acceso_distancias[][];
-    public ArrayList<Double> distancias;
+    private int ciudadesRecorridas;
+    private double distancia;
+    final private int finCamino;
 
     public TSPDinamico(Ciudad ciudades[]) {
-        this.distancias = new ArrayList<>();
         this.acceso_distancias = new Double[ciudades.length + 1][ciudades.length + 1];
+        this.ciudadesRecorridas = 0;
+        this.distancia = 0;
+        this.finCamino = 0;
     }
     
     public double recorrerCaminos(Ciudad raiz,Ciudad[] hijos,Ciudad inicio,double distanciaRecorrida){
@@ -39,44 +43,53 @@ public class TSPDinamico {
                 double resultado = 0;
                 //Obtenemos la distancia entre el nodo raiz y el siguiente y le sumamos
                 //la distancia que llevamos recorrida hasta ahorita
-                if(this.acceso_distancias[raiz.getId()][hijos[i].getId()] != null){
-                   resultado = this.acceso_distancias[raiz.getId()][hijos[i].getId()];
-                }else{
-                   resultado = getDistancia(raiz.getPuntos(), hijos[i].getPuntos()) + distanciaRecorrida;
+                try {
+                    resultado = this.acceso_distancias[raiz.getId()][hijos[i].getId()];
+                } catch (Exception e) {
+                    resultado = getDistancia(raiz.getPuntos(), hijos[i].getPuntos()) + distanciaRecorrida;
                    this.acceso_distancias[raiz.getId()][hijos[i].getId()] = resultado;
                    this.acceso_distancias[hijos[i].getId()][raiz.getId()] = resultado;
-                } 
+                }
+                
+                ciudadesRecorridas++;
                 //Hacemos recursividad para recorrer los demas caminos faltantes
                 recorrerCaminos(hijos[i], nuevosHijos,inicio,resultado);
             }
         }else{
            double resultado = 0;
-           //Obtenemos la distancia entre el ultimo nodo y el nodo anterior
+           ciudadesRecorridas++;
            
            //Si la posicion en la tabla ya ha sido calculado, obtenemos ese dato de la tabla,
            //si no, calculamos la distancia y la guardamos en la tabla, y lo guardamos
-           
-            if(this.acceso_distancias[raiz.getId()][hijos[0].getId()] != null){
+            
+            //Obtenemos la distancia entre el ultimo nodo y el anterior
+            try {
                 resultado += this.acceso_distancias[raiz.getId()][hijos[0].getId()];
-            }else{
+            } catch (Exception e) {
                 resultado += getDistancia(raiz.getPuntos(), hijos[0].getPuntos());
                 this.acceso_distancias[raiz.getId()][hijos[0].getId()] = resultado;
                 this.acceso_distancias[hijos[0].getId()][raiz.getId()] = resultado;
             }
             
             //Obtenemos la distancia entre el ultimo nodo y el inicio
-            if(this.acceso_distancias[raiz.getId()][inicio.getId()] != null){
-              resultado +=  this.acceso_distancias[raiz.getId()][hijos[0].getId()]; 
-            }else{
-              resultado += getDistancia(inicio.getPuntos(), hijos[0].getPuntos());
-              this.acceso_distancias[raiz.getId()][inicio.getId()] = resultado;
-              this.acceso_distancias[inicio.getId()][raiz.getId()] = resultado;
-            }
-           
+            try {
+                resultado +=  this.acceso_distancias[raiz.getId()][hijos[0].getId()]; 
+            } catch (Exception e) {
+                resultado += getDistancia(inicio.getPuntos(), hijos[0].getPuntos());
+                this.acceso_distancias[raiz.getId()][inicio.getId()] = resultado;
+                this.acceso_distancias[inicio.getId()][raiz.getId()] = resultado;
+            }      
            //Le sumamos la distancia que llevamos recorriendo
            resultado += distanciaRecorrida;
-           //Agregamos a las distancias el valor de este camino
-           this.distancias.add(resultado);
+           
+           //Guardamos la distancia recorrida, si es menor que la actual, actualizamos el valor
+            if(this.finCamino == 0){
+                this.distancia = resultado;
+            }else{
+                if(resultado < this.distancia){
+                    this.distancia = resultado;
+                }
+            }  
            return resultado;
         }
        return 0;   
@@ -90,5 +103,22 @@ public class TSPDinamico {
         
         return resultado;
     }
+
+    public int getCiudadesRecorridas() {
+        return ciudadesRecorridas;
+    }
+
+    public void setCiudadesRecorridas(int ciudadesRecorridas) {
+        this.ciudadesRecorridas = ciudadesRecorridas;
+    }
+
+    public double getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
+    }
+    
     
 }
