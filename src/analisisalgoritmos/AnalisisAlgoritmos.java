@@ -8,18 +8,25 @@ package analisisalgoritmos;
 import Busquedas.GeneradorDatos;
 import TSP.Ciudad;
 import TSP.PuntosXY;
+import clases.ObjetoMochila;
 import clases.TiemposOrdenamiento;
 import graficador.Graficador;
 import java.awt.Color;
+import java.awt.GridLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import ordenamiento.Burbuja;
 import ordenamiento.BurbujaOptimizada;
 import ordenamiento.InsertSort;
 import ordenamiento.MergeSort;
 import ordenamiento.QuickSort;
 import org.jfree.data.xy.XYSeries;
+import programacion_dinamica.MochilaDinamica;
 import programacion_dinamica.TSPDinamico;
 import recursividad.Fibonacci;
 
@@ -32,7 +39,7 @@ public class AnalisisAlgoritmos {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         /* 
         ---------------------------------Fibonacci------------------------------------------
@@ -60,7 +67,7 @@ public class AnalisisAlgoritmos {
          */
         
         //MergeSort
-        MergeSort merge = new MergeSort();
+        //MergeSort merge = new MergeSort();
         /*
         int N = 10000;
         Graficador grafica = new Graficador();
@@ -211,6 +218,7 @@ public class AnalisisAlgoritmos {
         TSPDinamico tsp = new TSPDinamico(puntos);
         tsp.resolverProblema();
         */
+        /*
         Ciudad ciudadInicial = new Ciudad("A",new PuntosXY(2, 3),0);
 
         Ciudad[] ciudades = new Ciudad[10];
@@ -232,6 +240,30 @@ public class AnalisisAlgoritmos {
         System.out.println("Ciudades recorridas:"+ tsp.getCiudadesRecorridas());
         System.out.println("Distancia mínima: "+tsp.getDistancia());
         //System.out.println(finalTiempo);
+                
+        */
+        
+        //Mochila dinamica
+        MochilaDinamica mochila = new MochilaDinamica(100);
+        mochila.leerDatosPeso();
+        long tiempoInicial = System.currentTimeMillis();
+        ArrayList<ObjetoMochila>[][] maximoBeneficio = mochila.obtenerMaximoBeneficioDinamico();
+        ArrayList<ObjetoMochila> maximo = maximoBeneficio[mochila.getCantidadObjetos()][mochila.getCapacidad()];
+        long tiempoTotal = System.currentTimeMillis() - tiempoInicial;
+        
+        JFrame frame = new JFrame("Problema Mochila - Tiempo Ejecución: "+tiempoTotal+"ms");
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel panel = new JPanel(new GridLayout(maximo.size()/3, 3));
+        for(ObjetoMochila objeto : maximo){
+            JLabel label = new JLabel("Peso: " + objeto.getPeso() + ", Beneficio: " + objeto.getBeneficio());
+            label.setSize(600, 20);
+            panel.add(label);
+        }
+        frame.add(panel);
+        frame.setVisible(true);
+        System.out.println("Total de beneficio:" + mochila.obtenerBeneficio(maximo));
+
     }   
        
                
