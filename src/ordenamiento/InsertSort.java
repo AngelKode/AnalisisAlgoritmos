@@ -6,6 +6,7 @@
 package ordenamiento;
 
 import Busquedas.Busquedas;
+import java.util.ArrayList;
 
 /**
  *
@@ -55,6 +56,22 @@ public class InsertSort {
           }
 
           datos[j + 1] = key;                     //3 operaciones elementales
+        }
+    }
+    
+    static public void ordenar(ArrayList<Integer> lista){
+        int size = lista.size(); //1 operacion elemental
+
+        for (int step = 1; step < size; step++) {
+          int key = lista.get(step);                 
+          int j = step - 1;                       
+          
+          while (j >= 0 && key < lista.get(j)) {      
+            lista.set(j+1, lista.get(j));              
+            --j;                                  
+          }
+
+          lista.set(j+1, key);                     
         }
     }
 }

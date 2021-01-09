@@ -8,6 +8,7 @@ package analisisalgoritmos;
 import Busquedas.GeneradorDatos;
 import TSP.Ciudad;
 import TSP.PuntosXY;
+import algoritmos_avidos.CaballoTablero;
 import clases.ObjetoMochila;
 import clases.TiemposOrdenamiento;
 import graficador.Graficador;
@@ -26,6 +27,7 @@ import ordenamiento.InsertSort;
 import ordenamiento.MergeSort;
 import ordenamiento.QuickSort;
 import org.jfree.data.xy.XYSeries;
+import programacion_dinamica.CambioMonedasDinamico;
 import programacion_dinamica.MochilaDinamica;
 import programacion_dinamica.TSPDinamico;
 import recursividad.Fibonacci;
@@ -244,6 +246,7 @@ public class AnalisisAlgoritmos {
         */
         
         //Mochila dinamica
+        /*
         MochilaDinamica mochila = new MochilaDinamica(100);
         mochila.leerDatosPeso();
         long tiempoInicial = System.currentTimeMillis();
@@ -263,7 +266,43 @@ public class AnalisisAlgoritmos {
         frame.add(panel);
         frame.setVisible(true);
         System.out.println("Total de beneficio:" + mochila.obtenerBeneficio(maximo));
-
+        */
+        
+        /*Problema del caballo
+        CaballoTablero problema = new CaballoTablero();
+        problema.recorrerCasillas();
+        ArrayList<int[]> caminos = problema.obtenerCaminos();
+        
+        char[][] tablero = new char[8][8];
+        
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                tablero[i][j] = '-';
+            }
+        }
+        
+        for(int[] movimientos : caminos){
+           tablero[movimientos[0]][movimientos[1]] = '*';
+        }
+        
+        for(int i=0;i<8;i++){
+            for(int j=0;j<8;j++){
+                System.out.print(tablero[i][j]);
+            }
+            System.out.println("");
+        }
+        */
+        
+        //Problema del cambio de monedas
+        ArrayList<Integer> monedas = new ArrayList<>();
+        monedas.add(1);
+        monedas.add(2);
+        monedas.add(3);
+        monedas.add(5);
+        monedas.add(20);
+        CambioMonedasDinamico cambio = new CambioMonedasDinamico(30, monedas);
+        cambio.mejorCombinacion();
+        
     }   
        
                
